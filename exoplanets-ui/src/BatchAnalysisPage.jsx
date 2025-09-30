@@ -7,12 +7,13 @@ import { ArrowUpTrayIcon, DocumentArrowDownIcon, ArrowPathIcon } from '@heroicon
 
 const COLORS = ['#10B981', '#F59E0B'];
 
-const csvTemplate = `koi_period,koi_depth,koi_prad,koi_duration,koi_srad,koi_steff,koi_teq,mission
-129.9,430,1.17,5.3,0.52,3755,188,Kepler
-0.73,370,1.88,1.8,0.94,5196,2000,TESS
-15.2,280,2.34,3.1,0.78,4500,320,Kepler
-45.6,510,0.95,4.7,0.61,3900,245,Kepler
-3.8,190,3.21,2.4,1.12,5800,890,TESS`;
+// Updated CSV template with correct feature names for universal model
+const csvTemplate = `koi_period,koi_depth,koi_prad,koi_duration,koi_srad,koi_steff,koi_teq,koi_slogg,mission
+129.9,430,1.17,5.3,0.52,3755,188,4.7,Kepler
+0.73,370,1.88,1.8,0.94,5196,2000,4.3,TESS
+15.2,280,2.34,3.1,0.78,4500,320,4.5,Kepler
+45.6,510,0.95,4.7,0.61,3900,245,4.6,Kepler
+3.8,190,3.21,2.4,1.12,5800,890,4.2,TESS`;
 
 export default function BatchAnalysisPage() {
     const [file, setFile] = useState(null);
@@ -49,13 +50,35 @@ export default function BatchAnalysisPage() {
                     setError(`Error parsing CSV: ${parsedResults.errors[0].message}`);
                     setIsLoading(false); return;
                 }
-                const progressInterval = setInterval(() => { setProgress(prev => Math.min(prev + 10, 90)); }, 500);
+                
+                console.log('📊 Parsed CSV data:', parsedResults.data);
+                
+                const progressInterval = setInterval(() => { 
+                    setProgress(prev => Math.min(prev + 10, 90)); 
+                }, 500);
+                
                 try {
                     const response = await axios.post('http://localhost:8000/batch-analyze', parsedResults.data);
-                    setResults(response.data);
-                    clearInterval(progressInterval); setProgress(100);
+                    
+                    console.log('✅ Full API response:', response);
+                    console.log('📦 Response data:', response.data);
+                    console.log('🔍 Results array:', response.data.results);
+                    
+                    // Make sure we're setting the array, not the whole response
+                    if (response.data && Array.isArray(response.data.results)) {
+                        setResults(response.data.results);
+                    } else {
+                        console.error('❌ Unexpected response format:', response.data);
+                        setError('Unexpected response format from server');
+                        setResults([]);
+                    }
+                    
+                    clearInterval(progressInterval); 
+                    setProgress(100);
                 } catch (err) {
-                    setError(err.response?.data?.detail || 'An error occurred during analysis.');
+                    console.error('❌ API Error:', err);
+                    console.error('❌ Error response:', err.response);
+                    setError(err.response?.data?.detail || err.message || 'An error occurred during analysis.');
                     clearInterval(progressInterval);
                 } finally {
                     setTimeout(() => setIsLoading(false), 500);
@@ -65,10 +88,12 @@ export default function BatchAnalysisPage() {
     };
 
     const handleDownload = () => {
+        if (!results || !Array.isArray(results)) return;
+        
         const createCsvString = (records) => {
             const header = "koi_period,koi_prad,koi_teq,is_exoplanet,confidence,details,model_type\n";
             const rows = records.map(r => 
-                `${r.koi_period},${r.koi_prad},${r.koi_teq},${r.is_exoplanet},${(r.confidence || 0).toFixed(4)},"${r.details}","${r.model_type || 'GradientBoosting'}"`
+                `${r.koi_period},${r.koi_prad},${r.koi_teq},${r.is_exoplanet},${(r.confidence || 0).toFixed(4)},"${r.details}","${r.model_type || 'UniversalGradientBoosting'}"`
             ).join("\n");
             return header + rows;
         };
@@ -76,7 +101,7 @@ export default function BatchAnalysisPage() {
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url); 
-        link.setAttribute("download", `kepler_results_${fileName}`);
+        link.setAttribute("download", `universal_exoplanet_results_${fileName}`);
         link.style.visibility = 'hidden'; 
         document.body.appendChild(link);
         link.click(); 
@@ -88,24 +113,28 @@ export default function BatchAnalysisPage() {
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url); 
-        link.setAttribute("download", "kepler_batch_template.csv");
+        link.setAttribute("download", "universal_exoplanet_template.csv");
         link.style.visibility = 'hidden'; 
         document.body.appendChild(link);
         link.click(); 
         document.body.removeChild(link);
     };
 
-    const pieData = results ? [
+    // Safe data calculations
+    const pieData = results && Array.isArray(results) ? [
         { name: 'Exoplanet Candidates', value: results.filter(r => r.is_exoplanet).length },
         { name: 'False Positives', value: results.filter(r => !r.is_exoplanet).length },
     ] : [];
+
+    const scatterExoplanetData = results && Array.isArray(results) ? results.filter(r => r.is_exoplanet) : [];
+    const scatterFalsePositiveData = results && Array.isArray(results) ? results.filter(r => !r.is_exoplanet) : [];
 
     return (
         <div className="p-8 text-white max-w-7xl mx-auto">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-4xl font-bold text-indigo-400">Kepler Batch Analysis</h1>
-                    <p className="mt-2 text-gray-400">Upload a CSV file with Kepler data to analyze multiple candidates.</p>
+                    <h1 className="text-4xl font-bold text-indigo-400">Universal Batch Analysis</h1>
+                    <p className="mt-2 text-gray-400">Upload a CSV file with Kepler/TESS data to analyze multiple candidates.</p>
                 </div>
                 <button 
                     onClick={handleDownloadTemplate} 
@@ -127,7 +156,7 @@ export default function BatchAnalysisPage() {
                                     <p className="mt-2 text-sm text-gray-400">
                                         <span className="font-semibold text-indigo-400">Click to upload</span> or drag and drop
                                     </p>
-                                    <p className="text-xs text-gray-500">CSV must use Kepler KOI feature names</p>
+                                    <p className="text-xs text-gray-500">CSV must use KOI feature names for universal model</p>
                                     {fileName && !error && <p className="mt-2 text-sm font-medium text-green-400">{fileName}</p>}
                                     {error && <p className="mt-2 text-sm font-medium text-red-400">{error}</p>}
                                 </div>
@@ -138,13 +167,13 @@ export default function BatchAnalysisPage() {
                                 disabled={!file || isLoading} 
                                 className="w-full mt-4 rounded-lg bg-indigo-600 px-5 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:bg-gray-500"
                             >
-                                Analyze CSV File
+                                Analyze with Universal Model
                             </button>
                         </motion.div>
                     )}
                     {isLoading && (
                         <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-8">
-                            <p className="text-center text-lg font-semibold">Analyzing Kepler Data...</p>
+                            <p className="text-center text-lg font-semibold">Analyzing with Universal Model...</p>
                             <div className="w-full bg-gray-700 rounded-full h-2.5 mt-2">
                                 <motion.div 
                                     className="bg-indigo-500 h-2.5 rounded-full" 
@@ -154,15 +183,15 @@ export default function BatchAnalysisPage() {
                                 />
                             </div>
                             <p className="text-center text-gray-400 mt-2">
-                                Processing with Gradient Boosting model...
+                                Processing with Universal Gradient Boosting (Kepler + TESS)...
                             </p>
                         </motion.div>
                     )}
-                    {results && !isLoading && (
+                    {results && Array.isArray(results) && results.length > 0 && !isLoading && (
                         <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-12">
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <h2 className="text-3xl font-bold">Kepler Analysis Results</h2>
+                                    <h2 className="text-3xl font-bold">Universal Analysis Results</h2>
                                     <p className="text-gray-400 mt-1">
                                         Found {pieData[0]?.value || 0} potential exoplanets out of {results.length} candidates.
                                     </p>
@@ -233,13 +262,13 @@ export default function BatchAnalysisPage() {
                                             <Legend />
                                             <Scatter 
                                                 name="Exoplanet Candidates" 
-                                                data={results.filter(r => r.is_exoplanet)} 
+                                                data={scatterExoplanetData} 
                                                 fill="#10B981" 
                                                 shape="circle" 
                                             />
                                             <Scatter 
                                                 name="False Positives" 
-                                                data={results.filter(r => !r.is_exoplanet)} 
+                                                data={scatterFalsePositiveData} 
                                                 fill="#F59E0B" 
                                                 shape="triangle" 
                                             />
@@ -274,10 +303,15 @@ export default function BatchAnalysisPage() {
                                 </table>
                                 {results.length > 10 && (
                                     <p className="text-center mt-2 text-sm text-gray-500">
-                                        Showing first 10 of {results.length} Kepler candidates.
+                                        Showing first 10 of {results.length} candidates.
                                     </p>
                                 )}
                             </div>
+                        </motion.div>
+                    )}
+                    {results && Array.isArray(results) && results.length === 0 && !isLoading && (
+                        <motion.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-8 text-center">
+                            <p className="text-lg text-gray-400">No results to display</p>
                         </motion.div>
                     )}
                 </AnimatePresence>

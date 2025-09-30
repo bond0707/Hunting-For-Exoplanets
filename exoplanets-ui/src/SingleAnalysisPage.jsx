@@ -6,19 +6,20 @@ import { HabitabilityIndicator, CategoryVisualizer, TransitVisualizer } from './
 
 const missionOptions = ['TESS', 'Kepler', 'K2'];
 
-// Real KOI dataset samples
+// Updated KOI samples with correct feature names for universal model
 const koiSamples = [
     {
         name: "Confirmed Exoplanet - Small Rocky World",
         isExoplanet: true,
         data: {
-            orbital_period: 0.893,
-            transit_depth: 738,
-            planet_radius: 1.47,
-            transit_duration: 1.19,
-            stellar_radius: 0.496,
-            stellar_teff: 3834,
-            eq_temp: 973,
+            koi_period: 0.893,
+            koi_depth: 738,
+            koi_prad: 1.47,
+            koi_duration: 1.19,
+            koi_srad: 0.496,
+            koi_steff: 3834,
+            koi_teq: 973,
+            koi_slogg: 4.7,
             mission: "Kepler"
         }
     },
@@ -26,13 +27,14 @@ const koiSamples = [
         name: "Confirmed Exoplanet - Hot Jupiter", 
         isExoplanet: true,
         data: {
-            orbital_period: 3.579,
-            transit_depth: 11445,
-            planet_radius: 10.93,
-            transit_duration: 2.90,
-            stellar_radius: 1.039,
-            stellar_teff: 5731,
-            eq_temp: 1189,
+            koi_period: 3.579,
+            koi_depth: 11445,
+            koi_prad: 10.93,
+            koi_duration: 2.90,
+            koi_srad: 1.039,
+            koi_steff: 5731,
+            koi_teq: 1189,
+            koi_slogg: 4.4,
             mission: "Kepler"
         }
     },
@@ -40,13 +42,14 @@ const koiSamples = [
         name: "False Positive - Instrument Noise",
         isExoplanet: false,
         data: {
-            orbital_period: 15.2,
-            transit_depth: 85,
-            planet_radius: 0.8,
-            transit_duration: 0.5,
-            stellar_radius: 0.75,
-            stellar_teff: 4200,
-            eq_temp: 650,
+            koi_period: 15.2,
+            koi_depth: 85,
+            koi_prad: 0.8,
+            koi_duration: 0.5,
+            koi_srad: 0.75,
+            koi_steff: 4200,
+            koi_teq: 650,
+            koi_slogg: 4.5,
             mission: "Kepler"
         }
     }
@@ -72,8 +75,8 @@ function InputField({ label, name, placeholder, value, onChange, type = "number"
 
 export default function SingleAnalysisPage() {
     const [formData, setFormData] = useState({
-        orbital_period: '', transit_depth: '', planet_radius: '', transit_duration: '',
-        stellar_radius: '', stellar_teff: '', eq_temp: '', mission: 'TESS',
+        koi_period: '', koi_depth: '', koi_prad: '', koi_duration: '',
+        koi_srad: '', koi_steff: '', koi_teq: '', koi_slogg: '', mission: 'TESS',
     });
     const [result, setResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -85,40 +88,37 @@ export default function SingleAnalysisPage() {
         setFormData(prev => ({ ...prev, [name]: value ? Number(value) : '' }));
     };
 
-    // Convert frontend names to KOI dataset column names for backend
-    const convertToKOIFeatures = (data) => {
+    // Convert to model-expected format with engineered features (EXACTLY like training)
+    const prepareModelInput = (data) => {
         const {
-            orbital_period,
-            planet_radius,
-            transit_depth,
-            transit_duration,
-            stellar_radius,
-            stellar_teff,
-            eq_temp,
-            mission
+            koi_period, koi_prad, koi_teq, koi_srad, koi_slogg, 
+            koi_steff, koi_depth, koi_duration, mission
         } = data;
 
-        // Avoid division by zero
-        const safeStellarRadius = stellar_radius || 1;
-        const safeEqTemp = eq_temp || 1;
-        const safeTransitDuration = transit_duration || 1;
+        // Calculate engineered features (EXACTLY as in training)
+        const koi_insol = koi_steff ? Math.pow(koi_steff, 4) / Math.pow(koi_period || 1, 2) : 0;
+        const period_insol_ratio = koi_period && koi_insol ? koi_period / koi_insol : 0;
+        const radius_temp_ratio = koi_prad && koi_teq ? koi_prad / koi_teq : 0;
+        const log_period = koi_period ? Math.log10(koi_period) : 0;
+        const log_depth = koi_depth ? Math.log10(koi_depth) : 0;
 
         return {
-            // Map to KOI column names that your model was trained on
-            koi_period: orbital_period || 0,
-            koi_prad: planet_radius || 0,
-            koi_depth: transit_depth || 0,
-            koi_duration: transit_duration || 0,
-            koi_teq: eq_temp || 0,
-            koi_steff: stellar_teff || 0,
-            koi_srad: stellar_radius || 0,
+            // Core features (same as training)
+            koi_period: koi_period || 0,
+            koi_prad: koi_prad || 0,
+            koi_teq: koi_teq || 0,
+            koi_srad: koi_srad || 0,
+            koi_slogg: koi_slogg || 0,
+            koi_steff: koi_steff || 0,
+            koi_depth: koi_depth || 0,
+            koi_duration: koi_duration || 0,
             
-            // Engineered features
-            radius_ratio: (planet_radius || 0) / (safeStellarRadius + 1e-9),
-            depth_norm: (transit_depth || 0) / ((safeStellarRadius + 1e-9) ** 2),
-            period_temp_ratio: (orbital_period || 0) / (safeEqTemp + 1),
-            habitability_index: (eq_temp || 0) / (((planet_radius || 0) ** 2) + 1e-9),
-            transit_snr: (transit_depth || 0) / (safeTransitDuration + 1e-9),
+            // Engineered features (EXACTLY as in training)
+            koi_insol,
+            period_insol_ratio,
+            radius_temp_ratio,
+            log_period,
+            log_depth,
             mission: mission || 'TESS'
         };
     };
@@ -131,11 +131,14 @@ export default function SingleAnalysisPage() {
         setResult(null);
         
         try {
-            // Convert to KOI dataset column names
-            const koiData = convertToKOIFeatures(formData);
-            const response = await axios.post('http://127.0.0.1:8000/analyze', koiData);
+            // Prepare data in model-expected format
+            const modelData = prepareModelInput(formData);
+            console.log('Sending to backend:', modelData);
+            
+            const response = await axios.post('http://127.0.0.1:8000/analyze', modelData);
             setResult(response.data);
         } catch (err) {
+            console.error('API Error:', err);
             setError(err.response?.data?.detail || 'An unexpected error occurred.');
         } finally {
             setIsLoading(false);
@@ -157,7 +160,7 @@ export default function SingleAnalysisPage() {
                 <div className="flex justify-between items-center mb-6">
                     <div>
                         <h2 className="text-3xl font-bold flex items-center gap-3 text-indigo-400">Candidate Parameters</h2>
-                        <p className="text-gray-400 mt-2">Enter data or load a sample to begin the analysis.</p>
+                        <p className="text-gray-400 mt-2">Enter KOI data or load a sample for universal model analysis.</p>
                     </div>
                     <button
                         onClick={handleLoadSample}
@@ -169,52 +172,59 @@ export default function SingleAnalysisPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-6 mt-4 bg-gray-800/30 rounded-xl p-6 border border-gray-700">
                     <InputField
-                        label="Orbital Period (days)"
-                        name="orbital_period"
+                        label="Orbital Period - koi_period (days)"
+                        name="koi_period"
                         placeholder="e.g., 0.893"
-                        value={formData.orbital_period}
+                        value={formData.koi_period}
                         onChange={handleChange}
                     />
                     <InputField
-                        label="Transit Depth (ppm)"
-                        name="transit_depth"
+                        label="Transit Depth - koi_depth (ppm)"
+                        name="koi_depth"
                         placeholder="e.g., 738"
-                        value={formData.transit_depth}
+                        value={formData.koi_depth}
                         onChange={handleChange}
                     />
                     <InputField
-                        label="Planet Radius (Earth radii)"
-                        name="planet_radius"
+                        label="Planet Radius - koi_prad (Earth radii)"
+                        name="koi_prad"
                         placeholder="e.g., 1.47"
-                        value={formData.planet_radius}
+                        value={formData.koi_prad}
                         onChange={handleChange}
                     />
                     <InputField
-                        label="Transit Duration (hours)"
-                        name="transit_duration"
+                        label="Transit Duration - koi_duration (hours)"
+                        name="koi_duration"
                         placeholder="e.g., 1.19"
-                        value={formData.transit_duration}
+                        value={formData.koi_duration}
                         onChange={handleChange}
                     />
                     <InputField
-                        label="Host Star Radius (Solar radii)"
-                        name="stellar_radius"
+                        label="Stellar Radius - koi_srad (Solar radii)"
+                        name="koi_srad"
                         placeholder="e.g., 0.496"
-                        value={formData.stellar_radius}
+                        value={formData.koi_srad}
                         onChange={handleChange}
                     />
                     <InputField
-                        label="Host Star Temperature (Kelvin)"
-                        name="stellar_teff"
+                        label="Stellar Temperature - koi_steff (Kelvin)"
+                        name="koi_steff"
                         placeholder="e.g., 3834"
-                        value={formData.stellar_teff}
+                        value={formData.koi_steff}
                         onChange={handleChange}
                     />
                     <InputField
-                        label="Equilibrium Temperature (Kelvin)"
-                        name="eq_temp"
+                        label="Equilibrium Temp - koi_teq (Kelvin)"
+                        name="koi_teq"
                         placeholder="e.g., 973"
-                        value={formData.eq_temp}
+                        value={formData.koi_teq}
+                        onChange={handleChange}
+                    />
+                    <InputField
+                        label="Stellar Surface Gravity - koi_slogg (log cm/s²)"
+                        name="koi_slogg"
+                        placeholder="e.g., 4.7"
+                        value={formData.koi_slogg}
                         onChange={handleChange}
                     />
 
@@ -235,7 +245,7 @@ export default function SingleAnalysisPage() {
                         {isLoading ? (
                             <span className="flex items-center justify-center gap-2">
                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                                Analyzing...
+                                Analyzing with Universal Model...
                             </span>
                         ) : (
                             'Analyze Candidate'
@@ -257,8 +267,8 @@ export default function SingleAnalysisPage() {
                                 className="space-y-4"
                             >
                                 <div className="animate-spin h-12 w-12 rounded-full border-4 border-t-indigo-400 border-gray-600 mx-auto"></div>
-                                <p className="text-gray-400 text-lg">Running analysis...</p>
-                                <p className="text-gray-500 text-sm">Processing astronomical data</p>
+                                <p className="text-gray-400 text-lg">Running Universal Model Analysis...</p>
+                                <p className="text-gray-500 text-sm">Processing with Kepler + TESS trained model</p>
                             </motion.div>
                         )}
 
@@ -294,13 +304,16 @@ export default function SingleAnalysisPage() {
                                         <span className="text-xl text-gray-400 block">Confidence Level</span>
                                     </p>
                                     <p className="text-gray-300 text-lg">{result.details}</p>
+                                    <p className="text-sm text-indigo-300 mt-2">
+                                        Model: Universal Exoplanet Detector (Kepler + TESS)
+                                    </p>
                                 </div>
 
                                 {result.is_exoplanet && (
                                     <div className="space-y-4 text-left bg-gray-700/30 rounded-lg p-4 border border-gray-600">
-                                        <HabitabilityIndicator eqTemp={formData.eq_temp} />
-                                        <CategoryVisualizer planetRadius={formData.planet_radius} />
-                                        <TransitVisualizer transitDepth={formData.transit_depth} transitDuration={formData.transit_duration} />
+                                        <HabitabilityIndicator eqTemp={formData.koi_teq} />
+                                        <CategoryVisualizer planetRadius={formData.koi_prad} />
+                                        <TransitVisualizer transitDepth={formData.koi_depth} transitDuration={formData.koi_duration} />
                                     </div>
                                 )}
                             </motion.div>
@@ -320,7 +333,7 @@ export default function SingleAnalysisPage() {
                                         Ground Truth: {sampleInfo.isExoplanet ? "Confirmed Exoplanet" : "Not an Exoplanet"}
                                     </p>
                                     <p className="text-sm text-gray-400 mt-2">
-                                        Click "Analyze Candidate" to see what our model predicts!
+                                        Click "Analyze Candidate" to see what our universal model predicts!
                                     </p>
                                 </div>
                             </motion.div>
@@ -335,9 +348,9 @@ export default function SingleAnalysisPage() {
                                 className="space-y-4 px-6"
                             >
                                 <span className="text-6xl">🔭</span>
-                                <h3 className="text-2xl font-semibold text-white">Awaiting Data</h3>
+                                <h3 className="text-2xl font-semibold text-white">Universal Exoplanet Detector</h3>
                                 <p className="text-gray-400 max-w-xs mx-auto">
-                                    Enter candidate parameters or load a sample to begin exoplanet analysis.
+                                    Enter KOI parameters or load a sample to begin analysis with our Kepler + TESS trained model.
                                 </p>
                             </motion.div>
                         )}

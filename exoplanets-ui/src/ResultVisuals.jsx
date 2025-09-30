@@ -3,7 +3,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianG
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-export function HabitabilityIndicator({ eqTemp }) { // Changed from koi_teq to eqTemp
+export function HabitabilityIndicator({ eqTemp }) {
     const [indicator, setIndicator] = useState({
         icon: <ShieldExclamationIcon className="w-8 h-8" />,
         text: "Unknown Zone",
@@ -50,7 +50,7 @@ export function HabitabilityIndicator({ eqTemp }) { // Changed from koi_teq to e
             };
         }
         setIndicator(newIndicator);
-    }, [eqTemp]); // Changed dependency
+    }, [eqTemp]);
 
     return (
         <div className={`flex flex-col items-center justify-center text-center p-4 rounded-lg border ${indicator.bg} ${indicator.border}`}>
@@ -64,7 +64,7 @@ export function HabitabilityIndicator({ eqTemp }) { // Changed from koi_teq to e
     );
 }
 
-export function CategoryVisualizer({ planetRadius }) { // Changed from koi_prad to planetRadius
+export function CategoryVisualizer({ planetRadius }) {
     const [category, setCategory] = useState({
         name: 'Unknown',
         desc: 'Could not be classified.',
@@ -127,9 +127,8 @@ export function CategoryVisualizer({ planetRadius }) { // Changed from koi_prad 
             };
         }
         setCategory(newCategory);
-    }, [planetRadius]); // Changed dependency
+    }, [planetRadius]);
 
-    // Use emoji as fallback since we don't have actual planet images
     const getPlanetEmoji = (categoryName) => {
         const emojiMap = {
             'Sub-Earth': '🌑',
@@ -162,17 +161,16 @@ export function CategoryVisualizer({ planetRadius }) { // Changed from koi_prad 
     );
 }
 
-export function TransitVisualizer({ transitDepth = 430, transitDuration = 5.3 }) { // Changed from koi_depth/koi_duration
+export function TransitVisualizer({ transitDepth = 430, transitDuration = 5.3 }) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
         const generateLightCurveData = () => {
             const points = 100;
-            const transitWidth = Math.max(10, Math.min(40, transitDuration * 5)); // Scale duration appropriately
+            const transitWidth = Math.max(10, Math.min(40, transitDuration * 5));
             const dipStart = Math.floor((points - transitWidth) / 2);
             const dipEnd = dipStart + transitWidth;
             
-            // Convert ppm to fractional depth (430 ppm = 0.00043)
             const dipDepth = transitDepth / 1000000;
             const dipValue = 1 - dipDepth;
 
@@ -180,17 +178,13 @@ export function TransitVisualizer({ transitDepth = 430, transitDuration = 5.3 })
             for (let i = 0; i < points; i++) {
                 let brightness = 1.0;
                 
-                // Create smooth transit curve
                 if (i >= dipStart && i <= dipEnd) {
-                    // Smooth ingress and egress
                     const transitProgress = (i - dipStart) / transitWidth;
                     let depthMultiplier = 1.0;
                     
                     if (transitProgress < 0.1) {
-                        // Smooth ingress
                         depthMultiplier = transitProgress / 0.1;
                     } else if (transitProgress > 0.9) {
-                        // Smooth egress
                         depthMultiplier = (1 - transitProgress) / 0.1;
                     }
                     
@@ -199,14 +193,14 @@ export function TransitVisualizer({ transitDepth = 430, transitDuration = 5.3 })
                 
                 generatedData.push({
                     time: i,
-                    brightness: Math.max(0.99, Math.min(1.0, brightness)) // Keep within realistic bounds
+                    brightness: Math.max(0.99, Math.min(1.0, brightness))
                 });
             }
             return generatedData;
         };
 
         setData(generateLightCurveData());
-    }, [transitDepth, transitDuration]); // Changed dependencies
+    }, [transitDepth, transitDuration]);
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -228,7 +222,6 @@ export function TransitVisualizer({ transitDepth = 430, transitDuration = 5.3 })
         return null;
     };
 
-    // Calculate realistic Y-axis domain based on transit depth
     const minBrightness = 1 - (transitDepth / 1000000) - 0.001;
     const maxBrightness = 1.001;
 

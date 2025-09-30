@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import SingleAnalysisPage from './SingleAnalysisPage';
 import BatchAnalysisPage from './BatchAnalysisPage';
-import AboutModelPage from './AboutModelPage';
+import ModelAnalyticsPage from './ModelAnalyticsPage';
+import ModelDevelopmentPage from './ModelDevelopmentPage';
 
 export default function App() {
   const [page, setPage] = useState('single');
@@ -36,16 +37,18 @@ export default function App() {
             <path d="m15 9-6 6"/>
             <path d="m9 9 6 6"/>
           </svg>
-          <h1 className="text-xl font-bold text-white">SekAI - Exoplanet Discovery</h1>
+          <h1 className="text-xl font-bold text-white">SekAI - Universal Exoplanet Detector</h1>
         </div>
         <NavButton targetPage="single">Single Candidate</NavButton>
         <NavButton targetPage="batch">Batch Analysis</NavButton>
-        <NavButton targetPage="about">Model Insights</NavButton>
+        <NavButton targetPage="analytics">Model Analytics</NavButton>
+        <NavButton targetPage="development">Model Development</NavButton>
       </nav>
       <main>
         {page === 'single' && <SingleAnalysisPage />}
         {page === 'batch' && <BatchAnalysisPage />}
-        {page === 'about' && <AboutModelPage />}
+        {page === 'analytics' && <ModelAnalyticsPage />}
+        {page === 'development' && <ModelDevelopmentPage />}
       </main>
     </div>
   );
