@@ -3,7 +3,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianG
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-export function HabitabilityIndicator({ eqTemp }) {
+export function HabitabilityIndicator({ eqTemp }) { // Changed from koi_teq to eqTemp
     const [indicator, setIndicator] = useState({
         icon: <ShieldExclamationIcon className="w-8 h-8" />,
         text: "Unknown Zone",
@@ -16,15 +16,15 @@ export function HabitabilityIndicator({ eqTemp }) {
         if (eqTemp === undefined || eqTemp === null) return;
 
         let newIndicator;
-        if (eqTemp < 273) {
+        if (eqTemp < 200) {
             newIndicator = {
                 icon: <ShieldExclamationIcon className="w-8 h-8" />,
-                text: "Too Cold (Frozen)",
+                text: "Too Cold (Frozen World)",
                 color: "text-blue-400",
                 bg: "bg-blue-500/20",
                 border: "border-blue-500/30"
             };
-        } else if (eqTemp >= 273 && eqTemp <= 373) {
+        } else if (eqTemp >= 200 && eqTemp <= 400) {
             newIndicator = {
                 icon: <CloudIcon className="w-8 h-8" />,
                 text: "Habitable Zone (Temperate)",
@@ -32,17 +32,25 @@ export function HabitabilityIndicator({ eqTemp }) {
                 bg: "bg-green-500/20",
                 border: "border-green-500/30"
             };
+        } else if (eqTemp <= 600) {
+            newIndicator = {
+                icon: <FireIcon className="w-8 h-8" />,
+                text: "Hot Zone (Venus-like)",
+                color: "text-orange-400",
+                bg: "bg-orange-500/20",
+                border: "border-orange-500/30"
+            };
         } else {
             newIndicator = {
                 icon: <FireIcon className="w-8 h-8" />,
-                text: "Too Hot (Scorched)",
+                text: "Extreme Heat (Scorched)",
                 color: "text-red-400",
                 bg: "bg-red-500/20",
                 border: "border-red-500/30"
             };
         }
         setIndicator(newIndicator);
-    }, [eqTemp]);
+    }, [eqTemp]); // Changed dependency
 
     return (
         <div className={`flex flex-col items-center justify-center text-center p-4 rounded-lg border ${indicator.bg} ${indicator.border}`}>
@@ -51,11 +59,12 @@ export function HabitabilityIndicator({ eqTemp }) {
             </div>
             <p className="mt-2 text-sm font-semibold text-white">{indicator.text}</p>
             <p className="text-xs text-gray-400 mt-1">{eqTemp ? `${eqTemp} K` : 'No data'}</p>
+            <p className="text-xs text-gray-500 mt-1">Equilibrium Temperature</p>
         </div>
     );
 }
 
-export function CategoryVisualizer({ planetRadius }) {
+export function CategoryVisualizer({ planetRadius }) { // Changed from koi_prad to planetRadius
     const [category, setCategory] = useState({
         name: 'Unknown',
         desc: 'Could not be classified.',
@@ -71,7 +80,7 @@ export function CategoryVisualizer({ planetRadius }) {
         if (planetRadius < 0.8) {
             newCategory = {
                 name: 'Sub-Earth',
-                desc: 'Smaller than Earth.',
+                desc: 'Smaller than Earth (Mercury-like)',
                 color: "text-purple-400",
                 bg: "bg-purple-500/20",
                 border: "border-purple-500/30"
@@ -79,47 +88,56 @@ export function CategoryVisualizer({ planetRadius }) {
         } else if (planetRadius <= 1.25) {
             newCategory = {
                 name: 'Earth-like',
-                desc: 'Similar in size to Earth.',
+                desc: 'Similar in size to Earth',
                 color: "text-green-400",
                 bg: "bg-green-500/20",
                 border: "border-green-500/30"
             };
-        } else if (planetRadius <= 2) {
+        } else if (planetRadius <= 1.8) {
             newCategory = {
                 name: 'Super-Earth',
-                desc: 'Larger than Earth, but still rocky.',
+                desc: 'Larger than Earth, rocky',
                 color: "text-blue-400",
                 bg: "bg-blue-500/20",
                 border: "border-blue-500/30"
             };
-        } else if (planetRadius <= 4) {
+        } else if (planetRadius <= 3.5) {
             newCategory = {
                 name: 'Mini-Neptune',
-                desc: 'A gaseous planet, smaller than Neptune.',
+                desc: 'Small gas planet with atmosphere',
                 color: "text-cyan-400",
                 bg: "bg-cyan-500/20",
                 border: "border-cyan-500/30"
             };
+        } else if (planetRadius <= 6) {
+            newCategory = {
+                name: 'Neptune-like',
+                desc: 'Ice giant similar to Neptune',
+                color: "text-indigo-400",
+                bg: "bg-indigo-500/20",
+                border: "border-indigo-500/30"
+            };
         } else {
             newCategory = {
-                name: 'Gas-Giant',
-                desc: 'A large planet like Jupiter or Neptune.',
+                name: 'Gas Giant',
+                desc: 'Large planet like Jupiter',
                 color: "text-orange-400",
                 bg: "bg-orange-500/20",
                 border: "border-orange-500/30"
             };
         }
         setCategory(newCategory);
-    }, [planetRadius]);
+    }, [planetRadius]); // Changed dependency
 
     // Use emoji as fallback since we don't have actual planet images
     const getPlanetEmoji = (categoryName) => {
         const emojiMap = {
-            'Sub-Earth': '🪐',
+            'Sub-Earth': '🌑',
             'Earth-like': '🌍',
             'Super-Earth': '🪐',
             'Mini-Neptune': '🔵',
-            'Gas-Giant': '🪐',
+            'Neptune-like': '🔷',
+            'Gas Giant': '🪐',
             'Unknown': '❓'
         };
         return emojiMap[categoryName] || '🪐';
@@ -129,58 +147,90 @@ export function CategoryVisualizer({ planetRadius }) {
         <div className={`flex flex-col items-center justify-center text-center p-4 rounded-lg border ${category.bg} ${category.border}`}>
             <motion.div
                 className="text-6xl mb-2"
-                animate={{ y: ["-4px", "4px", "-4px"] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ 
+                    rotate: [0, 5, -5, 0],
+                    scale: [1, 1.05, 1]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
                 {getPlanetEmoji(category.name)}
             </motion.div>
-            <p className={`text-sm font-semibold ${category.color}`}>{category.name.replace('-', ' ')}</p>
+            <p className={`text-sm font-semibold ${category.color}`}>{category.name}</p>
             <p className="text-xs text-gray-400 mt-1">{category.desc}</p>
-            <p className="text-xs text-gray-500 mt-1">{planetRadius ? `${planetRadius} R⊕` : 'No radius data'}</p>
+            <p className="text-xs text-gray-500 mt-1">{planetRadius ? `${planetRadius.toFixed(2)} R⊕` : 'No radius data'}</p>
         </div>
     );
 }
 
-export function TransitVisualizer({ transitDepth = 8400, transitDuration = 4 }) {
+export function TransitVisualizer({ transitDepth = 430, transitDuration = 5.3 }) { // Changed from koi_depth/koi_duration
     const [data, setData] = useState([]);
 
     useEffect(() => {
         const generateLightCurveData = () => {
             const points = 100;
-            const dipStart = Math.floor((points - (transitDuration * 10)) / 2);
-            const dipEnd = dipStart + Math.floor(transitDuration * 10);
-            const dipValue = 1 - (transitDepth / 1000000);
+            const transitWidth = Math.max(10, Math.min(40, transitDuration * 5)); // Scale duration appropriately
+            const dipStart = Math.floor((points - transitWidth) / 2);
+            const dipEnd = dipStart + transitWidth;
+            
+            // Convert ppm to fractional depth (430 ppm = 0.00043)
+            const dipDepth = transitDepth / 1000000;
+            const dipValue = 1 - dipDepth;
 
             const generatedData = [];
             for (let i = 0; i < points; i++) {
                 let brightness = 1.0;
+                
+                // Create smooth transit curve
                 if (i >= dipStart && i <= dipEnd) {
-                    brightness = dipValue;
+                    // Smooth ingress and egress
+                    const transitProgress = (i - dipStart) / transitWidth;
+                    let depthMultiplier = 1.0;
+                    
+                    if (transitProgress < 0.1) {
+                        // Smooth ingress
+                        depthMultiplier = transitProgress / 0.1;
+                    } else if (transitProgress > 0.9) {
+                        // Smooth egress
+                        depthMultiplier = (1 - transitProgress) / 0.1;
+                    }
+                    
+                    brightness = 1 - (dipDepth * depthMultiplier);
                 }
+                
                 generatedData.push({
                     time: i,
-                    brightness: Math.max(0, Math.min(1, brightness))
+                    brightness: Math.max(0.99, Math.min(1.0, brightness)) // Keep within realistic bounds
                 });
             }
             return generatedData;
         };
 
         setData(generateLightCurveData());
-    }, [transitDepth, transitDuration]);
+    }, [transitDepth, transitDuration]); // Changed dependencies
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
+            const brightness = payload[0].value;
+            const depthPpm = (1 - brightness) * 1000000;
+            
             return (
                 <div className="bg-gray-800 border border-gray-700 rounded-lg p-3 shadow-xl">
                     <p className="text-gray-300 text-sm">Time: {label}</p>
                     <p className="text-indigo-400 font-mono">
-                        Brightness: {payload[0].value.toFixed(4)}
+                        Brightness: {brightness.toFixed(5)}
+                    </p>
+                    <p className="text-cyan-400 text-xs">
+                        Depth: {depthPpm.toFixed(0)} ppm
                     </p>
                 </div>
             );
         }
         return null;
     };
+
+    // Calculate realistic Y-axis domain based on transit depth
+    const minBrightness = 1 - (transitDepth / 1000000) - 0.001;
+    const maxBrightness = 1.001;
 
     return (
         <div className="p-4 rounded-lg bg-gray-800/50 border border-gray-700 h-48 w-full">
@@ -204,10 +254,10 @@ export function TransitVisualizer({ transitDepth = 8400, transitDuration = 4 }) 
                         }}
                     />
                     <YAxis
-                        domain={[0.98, 1.002]}
+                        domain={[minBrightness, maxBrightness]}
                         stroke="#9ca3af"
                         tick={{ fontSize: 10 }}
-                        tickFormatter={(value) => value.toFixed(3)}
+                        tickFormatter={(value) => value.toFixed(4)}
                         label={{
                             value: 'Relative Brightness',
                             angle: -90,
@@ -231,6 +281,7 @@ export function TransitVisualizer({ transitDepth = 8400, transitDuration = 4 }) 
             <div className="flex justify-between text-xs text-gray-400 mt-2">
                 <span>Depth: {transitDepth} ppm</span>
                 <span>Duration: {transitDuration}h</span>
+                <span>Signal: {(transitDepth / 1000).toFixed(1)}‰</span>
             </div>
         </div>
     );

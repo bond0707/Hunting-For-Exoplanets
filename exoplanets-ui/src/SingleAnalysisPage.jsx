@@ -2,10 +2,55 @@ import { useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import CustomSelect from './CustomSelect';
-import { sampleExoplanets } from './sampleExoplanets';
 import { HabitabilityIndicator, CategoryVisualizer, TransitVisualizer } from './ResultVisuals';
 
 const missionOptions = ['TESS', 'Kepler', 'K2'];
+
+// Real KOI dataset samples
+const koiSamples = [
+    {
+        name: "Confirmed Exoplanet - Small Rocky World",
+        isExoplanet: true,
+        data: {
+            orbital_period: 0.893,
+            transit_depth: 738,
+            planet_radius: 1.47,
+            transit_duration: 1.19,
+            stellar_radius: 0.496,
+            stellar_teff: 3834,
+            eq_temp: 973,
+            mission: "Kepler"
+        }
+    },
+    {
+        name: "Confirmed Exoplanet - Hot Jupiter", 
+        isExoplanet: true,
+        data: {
+            orbital_period: 3.579,
+            transit_depth: 11445,
+            planet_radius: 10.93,
+            transit_duration: 2.90,
+            stellar_radius: 1.039,
+            stellar_teff: 5731,
+            eq_temp: 1189,
+            mission: "Kepler"
+        }
+    },
+    {
+        name: "False Positive - Instrument Noise",
+        isExoplanet: false,
+        data: {
+            orbital_period: 15.2,
+            transit_depth: 85,
+            planet_radius: 0.8,
+            transit_duration: 0.5,
+            stellar_radius: 0.75,
+            stellar_teff: 4200,
+            eq_temp: 650,
+            mission: "Kepler"
+        }
+    }
+];
 
 function InputField({ label, name, placeholder, value, onChange, type = "number" }) {
     return (
@@ -40,14 +85,55 @@ export default function SingleAnalysisPage() {
         setFormData(prev => ({ ...prev, [name]: value ? Number(value) : '' }));
     };
 
+    // Convert frontend names to KOI dataset column names for backend
+    const convertToKOIFeatures = (data) => {
+        const {
+            orbital_period,
+            planet_radius,
+            transit_depth,
+            transit_duration,
+            stellar_radius,
+            stellar_teff,
+            eq_temp,
+            mission
+        } = data;
+
+        // Avoid division by zero
+        const safeStellarRadius = stellar_radius || 1;
+        const safeEqTemp = eq_temp || 1;
+        const safeTransitDuration = transit_duration || 1;
+
+        return {
+            // Map to KOI column names that your model was trained on
+            koi_period: orbital_period || 0,
+            koi_prad: planet_radius || 0,
+            koi_depth: transit_depth || 0,
+            koi_duration: transit_duration || 0,
+            koi_teq: eq_temp || 0,
+            koi_steff: stellar_teff || 0,
+            koi_srad: stellar_radius || 0,
+            
+            // Engineered features
+            radius_ratio: (planet_radius || 0) / (safeStellarRadius + 1e-9),
+            depth_norm: (transit_depth || 0) / ((safeStellarRadius + 1e-9) ** 2),
+            period_temp_ratio: (orbital_period || 0) / (safeEqTemp + 1),
+            habitability_index: (eq_temp || 0) / (((planet_radius || 0) ** 2) + 1e-9),
+            transit_snr: (transit_depth || 0) / (safeTransitDuration + 1e-9),
+            mission: mission || 'TESS'
+        };
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSampleInfo(null);
         setIsLoading(true);
         setError('');
         setResult(null);
+        
         try {
-            const response = await axios.post('http://127.0.0.1:8000/analyze', formData);
+            // Convert to KOI dataset column names
+            const koiData = convertToKOIFeatures(formData);
+            const response = await axios.post('http://127.0.0.1:8000/analyze', koiData);
             setResult(response.data);
         } catch (err) {
             setError(err.response?.data?.detail || 'An unexpected error occurred.');
@@ -57,7 +143,7 @@ export default function SingleAnalysisPage() {
     };
 
     const handleLoadSample = () => {
-        const randomSample = sampleExoplanets[Math.floor(Math.random() * sampleExoplanets.length)];
+        const randomSample = koiSamples[Math.floor(Math.random() * koiSamples.length)];
         setFormData(randomSample.data);
         setSampleInfo(randomSample);
         setResult(null);
@@ -85,49 +171,49 @@ export default function SingleAnalysisPage() {
                     <InputField
                         label="Orbital Period (days)"
                         name="orbital_period"
-                        placeholder="e.g., 365.25"
+                        placeholder="e.g., 0.893"
                         value={formData.orbital_period}
                         onChange={handleChange}
                     />
                     <InputField
                         label="Transit Depth (ppm)"
                         name="transit_depth"
-                        placeholder="e.g., 8400"
+                        placeholder="e.g., 738"
                         value={formData.transit_depth}
                         onChange={handleChange}
                     />
                     <InputField
                         label="Planet Radius (Earth radii)"
                         name="planet_radius"
-                        placeholder="e.g., 1.0"
+                        placeholder="e.g., 1.47"
                         value={formData.planet_radius}
                         onChange={handleChange}
                     />
                     <InputField
                         label="Transit Duration (hours)"
                         name="transit_duration"
-                        placeholder="e.g., 6.2"
+                        placeholder="e.g., 1.19"
                         value={formData.transit_duration}
                         onChange={handleChange}
                     />
                     <InputField
                         label="Host Star Radius (Solar radii)"
                         name="stellar_radius"
-                        placeholder="e.g., 1.0"
+                        placeholder="e.g., 0.496"
                         value={formData.stellar_radius}
                         onChange={handleChange}
                     />
                     <InputField
                         label="Host Star Temperature (Kelvin)"
                         name="stellar_teff"
-                        placeholder="e.g., 5778"
+                        placeholder="e.g., 3834"
                         value={formData.stellar_teff}
                         onChange={handleChange}
                     />
                     <InputField
                         label="Equilibrium Temperature (Kelvin)"
                         name="eq_temp"
-                        placeholder="e.g., 255"
+                        placeholder="e.g., 973"
                         value={formData.eq_temp}
                         onChange={handleChange}
                     />

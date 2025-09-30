@@ -1,26 +1,72 @@
 export const sampleExoplanets = [
     {
-        name: 'Kepler-186f (Habitable Zone Earth-sized Planet)',
+        name: "Kepler-186f (Earth-like)",
         isExoplanet: true,
         data: {
-            orbital_period: 129.9, transit_depth: 430, planet_radius: 1.17, transit_duration: 5.3,
-            stellar_radius: 0.52, stellar_teff: 3755, eq_temp: 188, mission: 'Kepler',
-        },
+            koi_period: 129.9,
+            koi_depth: 430,
+            koi_prad: 1.17,
+            koi_duration: 5.3,
+            koi_srad: 0.52,
+            koi_steff: 3755,
+            koi_teq: 188,
+            mission: "Kepler"
+        }
     },
     {
-        name: 'TRAPPIST-1e (Potentially Habitable)',
-        isExoplanet: true,
+        name: "TESS False Positive",
+        isExoplanet: false,
         data: {
-            orbital_period: 6.1, transit_depth: 7720, planet_radius: 0.92, transit_duration: 1.26,
-            stellar_radius: 0.12, stellar_teff: 2566, eq_temp: 251, mission: 'TESS',
-        },
+            koi_period: 0.73,
+            koi_depth: 370,
+            koi_prad: 1.88,
+            koi_duration: 1.8,
+            koi_srad: 0.94,
+            koi_steff: 5196,
+            koi_teq: 2000,
+            mission: "TESS"
+        }
     },
     {
-        name: '55 Cancri e (Super-Earth Lava World)',
+        name: "Kepler-452b (Super Earth)",
         isExoplanet: true,
         data: {
-            orbital_period: 0.73, transit_depth: 370, planet_radius: 1.88, transit_duration: 1.8,
-            stellar_radius: 0.94, stellar_teff: 5196, eq_temp: 2000, mission: 'TESS',
-        },
+            koi_period: 384.8,
+            koi_depth: 160,
+            koi_prad: 1.63,
+            koi_duration: 14.7,
+            koi_srad: 1.11,
+            koi_steff: 5757,
+            koi_teq: 265,
+            mission: "Kepler"
+        }
     },
+    {
+        name: "Hot Jupiter Candidate",
+        isExoplanet: true,
+        data: {
+            koi_period: 3.2,
+            koi_depth: 12500,
+            koi_prad: 12.4,
+            koi_duration: 2.9,
+            koi_srad: 1.45,
+            koi_steff: 6100,
+            koi_teq: 1450,
+            mission: "Kepler"
+        }
+    },
+    {
+        name: "Stellar Binary (False Positive)",
+        isExoplanet: false,
+        data: {
+            koi_period: 1.25,
+            koi_depth: 8500,
+            koi_prad: 8.9,
+            koi_duration: 1.1,
+            koi_srad: 0.76,
+            koi_steff: 4800,
+            koi_teq: 3200,
+            mission: "TESS"
+        }
+    }
 ];
