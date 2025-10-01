@@ -1,4 +1,4 @@
-# SekAI - A World Away
+# Seek.AI - Exoplanet Detector
 
 **A machine learning application for the NASA Space Apps Challenge that classifies exoplanet candidates from transit data.**
 
@@ -20,7 +20,7 @@ This project uses an ensemble model to predict whether an astronomical candidate
 
 * **Frontend:** React, Vite, Tailwind CSS, Framer Motion, Recharts
 * **Backend:** Python, FastAPI
-* **Machine Learning:** Scikit-learn, Pandas, XGBoost, LightGBM, CatBoost
+* **Machine Learning:** Scikit-learn, Pandas, XGBoost, LightGBM, CatBoost 
 
 ---
 
@@ -57,3 +57,10 @@ npm install
 # Run the development server
 npm run dev
 ```
+
+### Future Updates
+
+* [ ] Add more graphs in the "Analytics" page.
+* [ ] Remove the occurence white border in "Feature Importance" graph in "Analytics" page when it is clicked.
+* [ ] Add animations to "Feature Details" component and the component below it on the "Analytics" page for whenever the "Feature Details" component is modified.
+* [ ] Update "Tech Stack" section of the `README.md` with correct ML model names (whatever we decide to use in the end)
