@@ -11,7 +11,7 @@ export default function App() {
     { id: 'single', label: 'Single Candidate' },
     { id: 'batch', label: 'Batch Analysis' },
     { id: 'analytics', label: 'Model Analytics' },
-    { id: 'development', label: 'Model Development' }
+    { id: 'development', label: 'Model Architecture' }  // Updated label
   ];
 
   const renderPage = () => {
@@ -42,10 +42,9 @@ export default function App() {
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
             <circle cx="12" cy="12" r="3" />
           </svg>
-          <h1 className="text-xl font-bold text-white">Seek.AI - Exoplanet Detector</h1>
+          <h1 className="text-xl font-bold text-white">Seek.AI - 5-Model Ensemble</h1> {/* Updated */}
         </div>
 
-        {/* Navigation Buttons */}
         {pages.map(({ id, label }) => (
           <button
             key={id}

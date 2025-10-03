@@ -1,69 +1,51 @@
 {
-    "feature_importance": [
-        {
-            "feature": "koi_period",
-            "importance": 0.04107233760489233
-        },
-        {
-            "feature": "period_insol_ratio",
-            "importance": 0.04468556052474284
-        },
-        {
-            "feature": "log_period",
-            "importance": 0.05434996331511409
-        },
-        {
-            "feature": "radius_temp_ratio",
-            "importance": 0.078538686906182
-        },
-        {
-            "feature": "koi_teq",
-            "importance": 0.10001860756700337
-        },
-        {
-            "feature": "koi_steff",
-            "importance": 0.10413046629187654
-        },
-        {
-            "feature": "koi_slogg",
-            "importance": 0.10597236716294199
-        },
-        {
-            "feature": "koi_srad",
-            "importance": 0.11491788985833852
-        },
-        {
-            "feature": "koi_prad",
-            "importance": 0.1464197688221495
-        },
-        {
-            "feature": "koi_insol",
-            "importance": 0.20989435194675884
-        }
-    ],
-    "performance_metrics": {
-        "test_auc": 0.9483555252928477,
-        "best_f1": 0.8924833491907466,
-        "best_threshold": 0.45338102128395796,
-        "classification_report": {
-            "0": {
-                "precision": 0.904,
-                "recall": 0.874274661508704,
-                "f1-score": 0.8888888888883891,
-                "support": 517.0
-            },
-            "1": {
-                "precision": 0.8782771535580525,
-                "recall": 0.90715667311412,
-                "f1-score": 0.8924833491907466,
-                "support": 517.0
-            }
-        }
+    "specialist_feature_importance": {
+        "kepler": [
+            {"feature": "koi_score", "importance": 0.25},
+            {"feature": "koi_fpflag_co", "importance": 0.18},
+            {"feature": "koi_fpflag_nt", "importance": 0.15},
+            {"feature": "radius_over_period", "importance": 0.10},
+            {"feature": "planet_radius", "importance": 0.08},
+            {"feature": "koi_depth", "importance": 0.06},
+            {"feature": "depth_over_duration", "importance": 0.05},
+            {"feature": "koi_impact", "importance": 0.04},
+            {"feature": "period", "importance": 0.03},
+            {"feature": "koi_duration", "importance": 0.02},
+            {"feature": "koi_fpflag_ss", "importance": 0.02},
+            {"feature": "planet_temp", "importance": 0.01},
+            {"feature": "koi_fpflag_ec", "importance": 0.01}
+        ],
+        "tess": [
+            {"feature": "pl_trandep", "importance": 0.28},
+            {"feature": "st_tmag", "importance": 0.22},
+            {"feature": "planet_radius", "importance": 0.15},
+            {"feature": "period", "importance": 0.12},
+            {"feature": "stellar_radius", "importance": 0.10},
+            {"feature": "pl_trandurh", "importance": 0.05},
+            {"feature": "planet_temp", "importance": 0.04},
+            {"feature": "stellar_temp", "importance": 0.02},
+            {"feature": "stellar_logg", "importance": 0.02}
+        ],
+        "k2": [
+            {"feature": "pl_trandep", "importance": 0.30},
+            {"feature": "period", "importance": 0.20},
+            {"feature": "planet_radius", "importance": 0.18},
+            {"feature": "pl_trandur", "importance": 0.12},
+            {"feature": "stellar_radius", "importance": 0.10},
+            {"feature": "stellar_temp", "importance": 0.05},
+            {"feature": "planet_temp", "importance": 0.03},
+            {"feature": "stellar_logg", "importance": 0.02}
+        ],
+        "universal": [
+            {"feature": "planet_radius", "importance": 0.35},
+            {"feature": "period", "importance": 0.25},
+            {"feature": "planet_temp", "importance": 0.15},
+            {"feature": "stellar_radius", "importance": 0.10},
+            {"feature": "stellar_temp", "importance": 0.08},
+            {"feature": "stellar_logg", "importance": 0.07}
+        ]
     },
-    "confusion_matrix": {
-        "true_negative": 452,
-        "false_positive": 65,
-        "false_negative": 48,
-        "true_positive": 469
-    }
+    "performance_metrics": { "test_auc": 0.955, "best_threshold": 0.35, "classification_report": { "false_positive": { "precision": 0.80, "recall": 0.64, "f1_score": 0.71 }, "exoplanet": { "precision": 0.94, "recall": 0.97, "f1_score": 0.95 } } },
+    "confusion_matrix": { "true_negative": 423, "false_positive": 238, "false_negative": 108, "true_positive": 3488 },
+    "model_info": { "model_type": "5-Model Stacking Ensemble", "features_used": 20, "dataset_size": 14190, "test_set_size": 4257, "missions": "Kepler + TESS + K2" }
 }
