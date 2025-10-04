@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import DatasetTab from './components/DatasetTab';
+import { getFallbackData } from './assets/modelInfo';
 import PerformanceTab from './components/PerformanceTab';
 import FeatureImportanceTab from './components/FeatureImportanceTab';
-import { getFallbackData } from './assets/modelInfo';
 
 function ModelAnalyticsPage() {
     const [analyticsData, setAnalyticsData] = useState(null);
@@ -12,7 +12,6 @@ function ModelAnalyticsPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // This effect now runs only once to get the static ensemble data
         const fetchEnsembleData = async () => {
             try {
                 setLoading(true);
@@ -28,7 +27,7 @@ function ModelAnalyticsPage() {
             }
         };
         fetchEnsembleData();
-    }, []); // Empty dependency array means it only runs once on mount
+    }, []); 
 
     if (loading) {
         return (
@@ -65,7 +64,6 @@ function ModelAnalyticsPage() {
 
                 <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     {activeTab === 'features' && (
-                        // Pass the initial (Kepler) feature list as a prop
                         <FeatureImportanceTab initialFeatureImportance={analyticsData?.feature_importance || []} />
                     )}
                     {activeTab === 'performance' && (

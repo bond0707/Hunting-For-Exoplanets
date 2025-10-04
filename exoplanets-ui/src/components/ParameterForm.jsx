@@ -1,17 +1,16 @@
-// components/ParameterForm.js
-import React from 'react';
 import { motion } from 'framer-motion';
 import InputField from './InputField';
+import CustomSelect from './CustomSelect';
+import { missionConfigs, missionOptions } from '../assets/missionConfigs';
 
 function ParameterForm({
     selectedMission,
-    formData,
-    fieldErrors,
+    onMissionChange,
+    onSubmit,
     isLoading,
     error,
-    onMissionChange,
-    onChange,
-    onSubmit,
+    formData,
+    onFormDataChange,
     onLoadSample
 }) {
     const currentConfig = missionConfigs[selectedMission];
@@ -42,17 +41,18 @@ function ParameterForm({
                     options={missionOptions}
                     value={selectedMission}
                     onChange={onMissionChange}
+                    placeholder="Choose Mission"
                 />
             </div>
 
+            {/* Removed noValidate to enable browser validation */}
             <form onSubmit={onSubmit} className="space-y-4 mt-4 bg-gray-800/30 rounded-xl p-6 border border-gray-700">
                 {currentConfig.features.map((field) => (
                     <InputField
                         key={field.name}
                         field={field}
                         value={formData[field.name]}
-                        onChange={onChange}
-                        errors={fieldErrors}
+                        onChange={onFormDataChange}
                     />
                 ))}
 

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 function ModelDevelopmentPage() {
     const [activeTab, setActiveTab] = useState('architecture');
@@ -22,14 +23,14 @@ function ModelDevelopmentPage() {
                 {/* Tab Navigation */}
                 <div className="flex flex-wrap gap-4 mb-8 border-b border-gray-800 pb-4 justify-center">
                     {tabs.map(tab => (
-                        <button
+                        <motion.button
                             key={tab.id}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-6 py-3 font-medium rounded-lg transition-all ${activeTab === tab.id ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-400 bg-gray-800 hover:bg-gray-700 shadow'
-                                }`}
+                            className={`px-6 py-3 font-medium rounded-lg transition-all ${activeTab === tab.id ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-400 bg-gray-800 hover:bg-gray-700 shadow'}`}
                         >
                             {tab.label}
-                        </button>
+                        </motion.button>
                     ))}
                 </div>
 

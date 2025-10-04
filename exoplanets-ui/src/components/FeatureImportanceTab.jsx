@@ -50,42 +50,33 @@ const FeatureDetailsCard = ({ selectedFeature }) => {
 const FeatureImportanceTab = ({ initialFeatureImportance }) => {
     const [selectedModel, setSelectedModel] = useState('Kepler');
     const [featureImportance, setFeatureImportance] = useState(initialFeatureImportance || []);
-    const [selectedFeature, setSelectedFeature] = useState(initialFeatureImportance ? initialFeatureImportance[0] : null);
-    const [loading, setLoading] = useState(false);
+    const [selectedFeature, setSelectedFeature] = useState(initialFeatureImportance?.[0] || null);
 
-    useEffect(() => {
-        setFeatureImportance(initialFeatureImportance || []);
-        if (initialFeatureImportance?.length > 0) {
-            setSelectedFeature(initialFeatureImportance[0]);
+    // Handle model changes
+    const handleModelChange = async (model) => {
+        setSelectedModel(model);
+
+        // For Kepler, use initial data immediately
+        if (model === 'Kepler') {
+            setFeatureImportance(initialFeatureImportance || []);
+            setSelectedFeature(initialFeatureImportance?.[0] || null);
+            return;
         }
-    }, [initialFeatureImportance]);
 
-    useEffect(() => {
-        const fetchSpecialistData = async () => {
-            if (selectedModel === 'Kepler' && initialFeatureImportance.length > 0) return;
-            setLoading(true);
-            try {
-                const url = `http://localhost:8000/model/analytics?model=${selectedModel.toLowerCase()}`;
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-                setFeatureImportance(data.feature_importance || []);
-                if (data.feature_importance?.length > 0) {
-                    setSelectedFeature(data.feature_importance[0]);
-                } else {
-                    setSelectedFeature(null);
-                }
-            } catch (error) {
-                console.error("Failed to fetch specialist feature importance:", error);
-                setFeatureImportance([]);
-                setSelectedFeature(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSpecialistData();
-    }, [selectedModel]);
+        // For other models, fetch data
+        try {
+            const url = `http://localhost:8000/model/analytics?model=${model.toLowerCase()}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+            setFeatureImportance(data.feature_importance || []);
+            setSelectedFeature(data.feature_importance?.[0] || null);
+        } catch (error) {
+            console.error("Failed to fetch specialist feature importance:", error);
+            setFeatureImportance([]);
+            setSelectedFeature(null);
+        }
+    };
 
     const displayData = [...featureImportance].sort((a, b) => b.importance - a.importance);
 
@@ -93,8 +84,14 @@ const FeatureImportanceTab = ({ initialFeatureImportance }) => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="mb-8 w-full md:w-64">
                 <label className="text-sm font-medium text-gray-300">Select Specialist Model</label>
-                <CustomSelect options={modelOptions} value={selectedModel} onChange={setSelectedModel} />
+                <CustomSelect
+                    options={modelOptions}
+                    value={selectedModel}
+                    onChange={handleModelChange}
+                    placeholder="Choose Mission"
+                />
             </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6 backdrop-blur-sm">
                     <h2 className="text-2xl font-bold text-white mb-6">Feature Importance: {selectedModel}</h2>
