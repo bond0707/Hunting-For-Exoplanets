@@ -1,5 +1,7 @@
 # Seek.AI - Exoplanet Detector
 
+https://github.com/user-attachments/assets/0f029747-9867-4be0-8e33-289355971990
+
 **A machine learning application for the NASA Space Apps Challenge that classifies exoplanet candidates from transit data.**
 
 This project uses an ensemble model to predict whether an astronomical candidate is a genuine exoplanet. It features a user-friendly web interface for single-candidate analysis, batch analysis via CSV upload, and interactive visualizations of the model's performance.
