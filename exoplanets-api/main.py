@@ -15,10 +15,10 @@ app = FastAPI(
     description="API for detecting exoplanets from Kepler, K2, and TESS mission data."
 )
 
-# Add CORS middleware to allow all origins
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173", "https://hunting-for-exoplanets.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
