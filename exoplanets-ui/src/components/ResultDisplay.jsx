@@ -59,7 +59,7 @@ function ResultDisplay({
                         >
                             <div className={`p-4 rounded-lg ${result.is_exoplanet ? 'bg-green-500/20 border border-green-500/30' : 'bg-amber-500/20 border border-amber-500/30'}`}>
                                 <h3 className={`text-2xl font-bold ${result.is_exoplanet ? 'text-green-400' : 'text-amber-400'}`}>
-                                    {result.is_exoplanet ? '🪐 Genuine Exoplanet' : '⭐ Not an Exoplanet'}
+                                    {result.is_exoplanet ? '🪐 Exoplanet' : '⭐ Not an exoplanet'}
                                 </h3>
                                 <p className="text-5xl font-bold my-4 text-white">
                                     {((result.confidence || 0) * 100).toFixed(1)}%
