@@ -29,7 +29,7 @@ export default function App() {
       <nav className="bg-gray-900/50 border-b border-gray-800 p-4 flex items-center gap-4">
         <div className="flex items-center gap-2 mr-6">
           <img
-            src="src/assets/SeekAI_Logo.png"
+            src="https://1h1v8plhplt59qyv.public.blob.vercel-storage.com/SeekAI_Logo.png"
             height={50}
             width={50}
           >
