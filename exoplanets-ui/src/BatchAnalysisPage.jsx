@@ -36,7 +36,7 @@ const ScatterTooltip = ({ active, payload }) => {
                 <p className={`font-semibold ${data.is_exoplanet ? 'text-green-400' : 'text-amber-400'}`}>
                     {data.is_exoplanet ? 'Exoplanet Candidate' : 'False Positive'}
                 </p>
-                <p className="text-gray-300 text-sm">Row: {data.original_row}</p>
+                <p className="text-gray-300 text-sm">Row: {data.original_row - 1}</p>
                 <p className="text-gray-300 text-sm">Period: {period ? period.toFixed(2) : 'N/A'} days</p>
                 <p className="text-gray-300 text-sm">Radius: {radius ? radius.toFixed(2) : 'N/A'} R⊕</p>
                 <p className="text-indigo-400">Confidence: {(data.confidence * 100).toFixed(1)}%</p>
@@ -345,7 +345,7 @@ export default function BatchAnalysisPage() {
                                     <tbody className="bg-gray-900 divide-y divide-gray-700">
                                         {resultsToDisplay.slice(0, visibleRows).map((row, index) => (
                                             <tr key={index} className="hover:bg-gray-800/50">
-                                                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 font-mono">{row.original_row}</td>
+                                                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 font-mono">{row.original_row - 1}</td>
                                                 <td className={`px-4 py-2 whitespace-nowrap text-sm font-semibold ${row.is_exoplanet ? 'text-green-400' : 'text-amber-400'}`}>{row.is_exoplanet ? 'Exoplanet' : 'False Positive'}</td>
                                                 <td className="px-4 py-2 whitespace-nowrap text-sm">{(row.confidence * 100).toFixed(1)}%</td>
                                                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-400">{row.model_type}</td>
