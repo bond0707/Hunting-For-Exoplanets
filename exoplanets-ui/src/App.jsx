@@ -28,20 +28,12 @@ export default function App() {
     <div className="min-h-screen w-full bg-[#0b0f19] font-sans">
       <nav className="bg-gray-900/50 border-b border-gray-800 p-4 flex items-center gap-4">
         <div className="flex items-center gap-2 mr-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="35"
-            height="35"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#818CF8"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <img
+            src="src/assets/SeekAI_Logo.png"
+            height={50}
+            width={50}
           >
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
+          </img>
           <h1 className="text-xl font-bold text-white">Seek.AI</h1> {/* Updated */}
         </div>
 
@@ -50,8 +42,8 @@ export default function App() {
             key={id}
             onClick={() => setActivePage(id)}
             className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${activePage === id
-                ? 'bg-indigo-600 text-white'
-                : 'text-gray-300 hover:bg-gray-700'
+              ? 'bg-indigo-600 text-white'
+              : 'text-gray-300 hover:bg-gray-700'
               }`}
           >
             {label}

@@ -332,144 +332,137 @@ export const missionConfigs = {
         ]
     }
 };
-
 export const missionSamples = {
+    // https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+top+5+kepid,kepoi_name,kepler_name,koi_score,koi_fpflag_nt,koi_fpflag_ss,koi_fpflag_co,koi_fpflag_ec,koi_period,koi_prad,koi_teq,koi_depth,koi_duration,koi_impact+from+cumulative+where+koi_disposition=%27CONFIRMED%27+and+koi_score+!=+1.0&format=csv
+    // https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+top+5+kepid,kepoi_name,kepler_name,koi_score,koi_fpflag_nt,koi_fpflag_ss,koi_fpflag_co,koi_fpflag_ec,koi_period,koi_prad,koi_teq,koi_depth,koi_duration,koi_impact+from+cumulative+where+koi_disposition=%27FALSE+POSITIVE%27+and+koi_score+!=+0.0&format=csv
     Kepler: [
         {
-            name: "Confirmed Kepler Exoplanet - Small Rocky World",
-            data: { koi_score: 0.95, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 0.893, koi_prad: 1.47, koi_teq: 973, koi_depth: 738, koi_duration: 1.19, koi_impact: 0.3 }
+            name: "Kepler-227 c (K00752.02)",
+            data: { koi_score: 0.969, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 54.4183827, koi_prad: 2.83, koi_teq: 443.0, koi_depth: 874.8, koi_duration: 4.507, koi_impact: 0.586 }
         },
         {
-            name: "Kepler-22 b (K00854.01)",
-            data: { koi_score: 1.000, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 289.862, koi_prad: 2.10, koi_teq: 262, koi_depth: 425.3, koi_duration: 6.95, koi_impact: 0.831 }
+            name: "Kepler-228 b (K00756.03)",
+            data: { koi_score: 0.992, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 2.56658897, koi_prad: 1.59, koi_teq: 1360.0, koi_depth: 226.5, koi_duration: 2.429, koi_impact: 0.755 }
         },
         {
-            name: "Kepler-186 f (K03138.05)",
-            data: { koi_score: 0.963, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 129.944, koi_prad: 1.17, koi_teq: 188, koi_depth: 110.1, koi_duration: 4.88, koi_impact: 0.768 }
+            name: "Kepler-1 b (K00001.01)",
+            data: { koi_score: 0.811, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 2.470613377, koi_prad: 13.04, koi_teq: 1339.0, koi_depth: 14230.9, koi_duration: 1.74319, koi_impact: 0.818 }
         },
         {
-            name: "Kepler-62 f (K00701.05)",
-            data: { koi_score: 0.999, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 267.291, koi_prad: 1.54, koi_teq: 208, koi_depth: 219.9, koi_duration: 7.72, koi_impact: 0.700 }
+            name: "Kepler-8 b (K00010.01)",
+            data: { koi_score: 0.998, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 3.522498429, koi_prad: 14.59, koi_teq: 1521.0, koi_depth: 9145.7, koi_duration: 3.19843, koi_impact: 0.631 }
         },
         {
-            name: "Kepler-452 b (K07030.01)",
-            data: { koi_score: 1.000, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 384.843, koi_prad: 1.59, koi_teq: 265, koi_depth: 201.7, koi_duration: 10.59, koi_impact: 0.698 }
+            name: "Kepler-226 b (K00749.02)",
+            data: { koi_score: 0.980, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 3.94105221, koi_prad: 1.7, koi_teq: 1018.0, koi_depth: 363.3, koi_duration: 2.5984, koi_impact: 0.226 }
         },
         {
-            name: "Kepler-11 f (K00157.05)",
-            data: { koi_score: 1.000, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 46.689, koi_prad: 2.49, koi_teq: 421, koi_depth: 708.8, koi_duration: 6.00, koi_impact: 0.170 }
+            name: "FP: K00774.01",
+            data: { koi_score: 0.014, koi_fpflag_nt: 0, koi_fpflag_ss: 1, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 7.442652004, koi_prad: 15.03, koi_teq: 967.0, koi_depth: 24446.2, koi_duration: 2.3078, koi_impact: 0.137 }
         },
         {
-            name: "FP: K00010.02",
-            data: { koi_score: 0.000, koi_fpflag_nt: 1, koi_fpflag_ss: 0, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 3.522, koi_prad: 47.92, koi_teq: 1403, koi_depth: 80932.1, koi_duration: 2.33, koi_impact: 1.021 }
+            name: "FP: K00799.01",
+            data: { koi_score: 0.773, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 1, koi_fpflag_ec: 0, koi_period: 1.626630225, koi_prad: 32.43, koi_teq: 1547.0, koi_depth: 1620.6, koi_duration: 2.1145, koi_impact: 1.26 }
         },
         {
-            name: "FP: K00075.02",
-            data: { koi_score: 0.000, koi_fpflag_nt: 1, koi_fpflag_ss: 1, koi_fpflag_co: 1, koi_fpflag_ec: 1, koi_period: 14.215, koi_prad: 32.22, koi_teq: 772, koi_depth: 298490.0, koi_duration: 1.76, koi_impact: 0.906 }
+            name: "FP: K00805.01",
+            data: { koi_score: 0.053, koi_fpflag_nt: 0, koi_fpflag_ss: 1, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 10.328035714, koi_prad: 13.28, koi_teq: 843.0, koi_depth: 16917.7, koi_duration: 7.7915, koi_impact: 0.281 }
         },
         {
-            name: "FP: K00115.03",
-            data: { koi_score: 0.000, koi_fpflag_nt: 1, koi_fpflag_ss: 1, koi_fpflag_co: 1, koi_fpflag_ec: 0, koi_period: 2.505, koi_prad: 1.13, koi_teq: 1395, koi_depth: 172.5, koi_duration: 3.32, koi_impact: 1.258 }
+            name: "FP: K00827.01",
+            data: { koi_score: 0.037, koi_fpflag_nt: 0, koi_fpflag_ss: 0, koi_fpflag_co: 1, koi_fpflag_ec: 0, koi_period: 5.97581754, koi_prad: 3.86, koi_teq: 1047.0, koi_depth: 962.4, koi_duration: 3.065, koi_impact: 0.941 }
         },
         {
-            name: "FP: K00112.02",
-            data: { koi_score: 0.000, koi_fpflag_nt: 1, koi_fpflag_ss: 1, koi_fpflag_co: 1, koi_fpflag_ec: 1, koi_period: 15.159, koi_prad: 2.11, koi_teq: 737, koi_depth: 770.2, koi_duration: 4.88, koi_impact: 1.229 }
-        },
-        {
-            name: "FP: K00001.02",
-            data: { koi_score: 0.000, koi_fpflag_nt: 1, koi_fpflag_ss: 1, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 0.837, koi_prad: 2.18, koi_teq: 2268, koi_depth: 379.8, koi_duration: 2.21, koi_impact: 0.899 }
+            name: "FP: K00831.01",
+            data: { koi_score: 0.006, koi_fpflag_nt: 0, koi_fpflag_ss: 1, koi_fpflag_co: 0, koi_fpflag_ec: 0, koi_period: 3.9043425, koi_prad: 12.28, koi_teq: 1104.0, koi_depth: 16228.4, koi_duration: 3.831, koi_impact: 0.709 }
         }
     ],
+    // https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=SELECT+top+5+%27TOI+-%27||toi+as+name,pl_orbper,pl_rade,pl_eqt,st_rad,st_teff,st_logg,pl_trandep,pl_trandurh,st_tmag+FROM+toi+WHERE+tfopwg_disp=%27FP%27+OR+tfopwg_disp=%27FA%27&format=csv
+    // https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=SELECT+top+5+%27TOI+-%27||toi+as+name,pl_orbper,pl_rade,pl_eqt,st_rad,st_teff,st_logg,pl_trandep,pl_trandurh,st_tmag+FROM+toi+WHERE+tfopwg_disp=%27CP%27&format=csv
     TESS: [
         {
-            name: "Confirmed TESS Exoplanet - Hot Jupiter",
-            data: { pl_orbper: 3.579, pl_rade: 10.93, pl_eqt: 1189, st_rad: 1.039, st_teff: 5731, st_logg: 4.4, pl_trandep: 11445, pl_trandurh: 2.90, st_tmag: 9.8 }
+            name: "TOI-1052.01",
+            data: { pl_orbper: 9.139804, pl_rade: 3.0629855, pl_eqt: 1006.9932829, st_rad: 1.58, st_teff: 5958.2, st_logg: 4.34, pl_trandep: 358.4157801, pl_trandurh: 3.0912936, st_tmag: 9.0197 }
         },
         {
-            name: "TOI-178 b",
-            data: { pl_orbper: 1.954, pl_rade: 1.18, pl_eqt: 871, st_rad: 0.655, st_teff: 4323, st_logg: 4.65, pl_trandep: 3456.9, pl_trandurh: 1.25, st_tmag: 11.23 }
+            name: "TOI-1054.01",
+            data: { pl_orbper: 15.5077855, pl_rade: 2.43432, pl_eqt: 853, st_rad: 1.17, st_teff: 6122, st_logg: 4.30881, pl_trandep: 513, pl_trandurh: 4.565, st_tmag: 8.4362 }
         },
         {
-            name: "TOI-700 d",
-            data: { pl_orbper: 37.424, pl_rade: 1.07, pl_eqt: 295, st_rad: 0.419, st_teff: 3496, st_logg: 4.89, pl_trandep: 742.0, pl_trandurh: 2.53, st_tmag: 12.39 }
+            name: "TOI-1055.01",
+            data: { pl_orbper: 17.4713078, pl_rade: 3.5766828, pl_eqt: 689.3568807, st_rad: 0.974669, st_teff: 5783.54, st_logg: 4.49925, pl_trandep: 1199.7541483, pl_trandurh: 4.4284819, st_tmag: 8.0888 }
         },
         {
-            name: "LHS 3844 b",
-            data: { pl_orbper: 0.462, pl_rade: 1.30, pl_eqt: 805, st_rad: 0.189, st_teff: 3036, st_logg: 5.21, pl_trandep: 5120.0, pl_trandurh: 1.28, st_tmag: 14.15 }
+            name: "TOI-1062.01",
+            data: { pl_orbper: 4.1150576, pl_rade: 2.30057, pl_eqt: 826, st_rad: 0.89, st_teff: 5394, st_logg: 4.50942, pl_trandep: 487, pl_trandurh: 1.08, st_tmag: 9.478 }
         },
         {
-            name: "Pi Mensae c",
-            data: { pl_orbper: 6.268, pl_rade: 2.06, pl_eqt: 1027, st_rad: 1.09, st_teff: 6037, st_logg: 4.41, pl_trandep: 370.0, pl_trandurh: 2.87, st_tmag: 5.34 }
+            name: "TOI-1064.01",
+            data: { pl_orbper: 6.4438657, pl_rade: 2.460344, pl_eqt: 712.2812841, st_rad: 0.737189, st_teff: 4803, st_logg: 4.52079, pl_trandep: 1121.9512275, pl_trandurh: 1.9309449, st_tmag: 10.0059 }
         },
         {
-            name: "TOI-1338 b",
-            data: { pl_orbper: 95.174, pl_rade: 6.34, pl_eqt: 300, st_rad: 1.30, st_teff: 6019, st_logg: 4.26, pl_trandep: 4684.0, pl_trandurh: 6.84, st_tmag: 11.27 }
+            name: "FP: TOI-1051.01",
+            data: { pl_orbper: 21.701669, pl_rade: 2.3751494, pl_eqt: 685.2, st_rad: 1.56486, st_teff: 5625, st_logg: 4.438, pl_trandep: 211.6567325, pl_trandurh: 8.2676424, st_tmag: 7.1278 }
         },
         {
-            name: "FP: TOI-143.01",
-            data: { pl_orbper: 2.229, pl_rade: 10.36, pl_eqt: 1324, st_rad: 0.86, st_teff: 5540, st_logg: 4.54, pl_trandep: 15306.0, pl_trandurh: 2.12, st_tmag: 10.38 }
+            name: "FP: TOI-1053.01",
+            data: { pl_orbper: 5.742625, pl_rade: 13.088532, pl_eqt: null, st_rad: 3.86959, st_teff: 5664, st_logg: 3.26574, pl_trandep: 1105.760867, pl_trandurh: 2.860293, st_tmag: 8.8849 }
         },
         {
-            name: "FP: TOI-135.01",
-            data: { pl_orbper: 5.867, pl_rade: 13.56, pl_eqt: 1056, st_rad: 1.10, st_teff: 6010, st_logg: 4.38, pl_trandep: 15998.0, pl_trandurh: 4.21, st_tmag: 9.88 }
+            name: "FP: TOI-1061.01",
+            data: { pl_orbper: 0.540933, pl_rade: 2.28501, pl_eqt: null, st_rad: 1.21935, st_teff: 5525, st_logg: 4.25342, pl_trandep: 257.347459, pl_trandurh: 1.674337, st_tmag: 9.7345 }
         },
         {
-            name: "FP: TOI-472.01",
-            data: { pl_orbper: 1.056, pl_rade: 34.34, pl_eqt: 2191, st_rad: 1.63, st_teff: 6100, st_logg: 4.04, pl_trandep: 57900.0, pl_trandurh: 3.57, st_tmag: 10.19 }
+            name: "FP: TOI-1070.01",
+            data: { pl_orbper: 2.9776152, pl_rade: 26.88423, pl_eqt: 1386.5, st_rad: 1.28, st_teff: 5740, st_logg: 4.29219, pl_trandep: 43218.111683, pl_trandurh: 3.25697, st_tmag: 15.7114 }
         },
         {
-            name: "FP: TOI-1140.01",
-            data: { pl_orbper: 0.919, pl_rade: 14.33, pl_eqt: 2351, st_rad: 2.05, st_teff: 8303, st_logg: 4.14, pl_trandep: 5122.0, pl_trandurh: 4.56, st_tmag: 9.94 }
-        },
-        {
-            name: "FP: TOI-1273.01",
-            data: { pl_orbper: 1.255, pl_rade: 24.31, pl_eqt: 1618, st_rad: 1.14, st_teff: 5313, st_logg: 3.86, pl_trandep: 50740.0, pl_trandurh: 2.80, st_tmag: 11.85 }
+            name: "FP: TOI-1072.01",
+            data: { pl_orbper: 12.8379689, pl_rade: 25.4886382, pl_eqt: 1225, st_rad: 2.4494, st_teff: 5765, st_logg: 4.34773, pl_trandep: 10539.0192794, pl_trandurh: 9.8464123, st_tmag: 11.7106 }
         }
     ],
+    // https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+top+5+epic_candname,epic_hostname,k2_name,pl_orbper,pl_rade,pl_eqt,st_rad,st_teff,st_logg,pl_trandep,pl_trandur+from+k2pandc+where+k2_name+is+not+null+and+pl_orbper+is+not+null+and+pl_rade+is+not+null+and+pl_eqt+is+not+null+and+st_rad+is+not+null+and+st_teff+is+not+null+and+st_logg+is+not+null+and+pl_trandep+is+not+null+and+pl_trandur+is+not+null&format=csv
+    // https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+top+5+epic_candname,epic_hostname,k2_name,pl_orbper,pl_rade,pl_eqt,st_rad,st_teff,st_logg,pl_trandep,pl_trandur+from+k2pandc+where+k2_name+is+null+and+pl_orbper+is+not+null+and+pl_rade+is+not+null+and+pl_eqt+is+not+null+and+st_rad+is+not+null+and+st_teff+is+not+null+and+st_logg+is+not+null+and+pl_trandep+is+not+null+and+pl_trandur+is+not+null&format=csv
     K2: [
         {
-            name: "Confirmed K2 Exoplanet - Super Earth",
-            data: { pl_orbper: 15.2, pl_rade: 2.34, pl_eqt: 320, st_rad: 0.78, st_teff: 4500, st_logg: 4.5, pl_trandep: 280, pl_trandur: 3.1 }
+            name: "K2-232 b",
+            data: { pl_orbper: 11.168459, pl_rade: 11.859122, pl_eqt: 1001.0, st_rad: 1.233, st_teff: 5888.0, st_logg: 4.273, pl_trandep: 0.7764, pl_trandur: 5.03016 }
         },
         {
-            name: "K2-18 b",
-            data: { pl_orbper: 32.939, pl_rade: 2.61, pl_eqt: 265, st_rad: 0.45, st_teff: 3457, st_logg: 4.86, pl_trandep: 3213.9, pl_trandur: 2.68 }
+            name: "K2-237 b",
+            data: { pl_orbper: 2.18053332, pl_rade: 16.06246934, pl_eqt: 1759.0, st_rad: 1.236, st_teff: 6180.0, st_logg: 4.353, pl_trandep: 1.416, pl_trandur: 2.92728 }
         },
         {
-            name: "K2-3 d",
-            data: { pl_orbper: 44.556, pl_rade: 1.55, pl_eqt: 279, st_rad: 0.49, st_teff: 3820, st_logg: 4.80, pl_trandep: 960.0, pl_trandur: 2.60 }
+            name: "K2-145 b",
+            data: { pl_orbper: 4.1752387, pl_rade: 13.843115, pl_eqt: 1356.0, st_rad: 1.155, st_teff: 6149.0, st_logg: 4.4, pl_trandep: 1.4, pl_trandur: 3.46272 }
         },
         {
-            name: "TRAPPIST-1 e",
-            data: { pl_orbper: 6.099, pl_rade: 0.92, pl_eqt: 251, st_rad: 0.12, st_teff: 2566, st_logg: 5.24, pl_trandep: 5549.0, pl_trandur: 0.81 }
+            name: "K2-143 b",
+            data: { pl_orbper: 3.6191613, pl_rade: 16.92559, pl_eqt: 1637.0, st_rad: 1.444, st_teff: 6060.0, st_logg: 4.118, pl_trandep: 1.18, pl_trandur: 4.3656 }
         },
         {
-            name: "K2-72 e",
-            data: { pl_orbper: 24.166, pl_rade: 1.25, pl_eqt: 289, st_rad: 0.27, st_teff: 3373, st_logg: 5.05, pl_trandep: 2100.0, pl_trandur: 1.63 }
+            name: "K2-144 b",
+            data: { pl_orbper: 3.142833, pl_rade: 15.13215, pl_eqt: 2097.0, st_rad: 2.21, st_teff: 6408.0, st_logg: 3.923, pl_trandep: 0.47, pl_trandur: 4.5576 }
         },
         {
-            name: "K2-138 b",
-            data: { pl_orbper: 2.353, pl_rade: 1.51, pl_eqt: 1202, st_rad: 0.94, st_teff: 5410, st_logg: 4.49, pl_trandep: 279.0, pl_trandur: 2.22 }
+            name: "FP: EPIC 211946007.01",
+            data: { pl_orbper: 1.9828041248, pl_rade: 10.89107018, pl_eqt: 543.47, st_rad: 0.293047, st_teff: 3213.0, st_logg: 4.93347, pl_trandep: 13.21050435, pl_trandur: 1.1139386 }
         },
         {
-            name: "FP: EPIC 201367065.01",
-            data: { pl_orbper: 8.583, pl_rade: 27.68, pl_eqt: 878, st_rad: 1.09, st_teff: 5790, st_logg: 4.43, pl_trandep: 694000.0, pl_trandur: 3.69 }
+            name: "FP: EPIC 219388192.01",
+            data: { pl_orbper: 5.29136017752, pl_rade: 11.52204139, pl_eqt: 1027.17, st_rad: 1.03676, st_teff: 5555.0, st_logg: 4.39749, pl_trandep: 1.12532759, pl_trandur: 3.5122145 }
         },
         {
-            name: "FP: EPIC 201563164.01",
-            data: { pl_orbper: 0.781, pl_rade: 13.92, pl_eqt: 2010, st_rad: 1.10, st_teff: 5800, st_logg: 4.39, pl_trandep: 168000.0, pl_trandur: 2.05 }
+            name: "FP: EPIC 218621322.01",
+            data: { pl_orbper: 11.5843558517, pl_rade: 5.49928933, pl_eqt: 651.38, st_rad: 1.09295, st_teff: 5631.0, st_logg: 4.36, pl_trandep: 0.2500558, pl_trandur: 3.4607621 }
         },
         {
-            name: "FP: EPIC 201822911.01",
-            data: { pl_orbper: 2.853, pl_rade: 41.67, pl_eqt: 2011, st_rad: 2.45, st_teff: 8300, st_logg: 4.10, pl_trandep: 310000.0, pl_trandur: 5.25 }
+            name: "FP: EPIC 220209578.01",
+            data: { pl_orbper: 8.90003342005, pl_rade: 15.12617706, pl_eqt: 884.09, st_rad: 1.0044, st_teff: 5854.0, st_logg: 4.45956, pl_trandep: 2.21632826, pl_trandur: 1.8542477 }
         },
         {
-            name: "FP: EPIC 203533423.01",
-            data: { pl_orbper: 1.057, pl_rade: 17.51, pl_eqt: 1819, st_rad: 1.18, st_teff: 6010, st_logg: 4.37, pl_trandep: 243000.0, pl_trandur: 3.33 }
-        },
-        {
-            name: "FP: EPIC 211993241.01",
-            data: { pl_orbper: 10.707, pl_rade: 21.03, pl_eqt: 765, st_rad: 1.10, st_teff: 5630, st_logg: 4.40, pl_trandep: 379000.0, pl_trandur: 3.99 }
+            name: "FP: EPIC 220448185.01",
+            data: { pl_orbper: 0.36432247904, pl_rade: 6.95273914, pl_eqt: 1086.47, st_rad: 0.347331, st_teff: 3473.0, st_logg: 4.87657, pl_trandep: 3.82167895, pl_trandur: 0.2120684 }
         }
     ],
     Other: [
