@@ -1,10 +1,10 @@
 # config.py
 
-# Feature lists for each model
+# UPDATED: Corrected the Kepler feature list to the 11 features the model was trained on.
 KEPLER_FEATURES = [
     'koi_score', 'koi_fpflag_nt', 'koi_fpflag_ss', 'koi_fpflag_co', 'koi_fpflag_ec',
     'period', 'planet_radius', 'planet_temp', 'koi_depth', 'koi_duration',
-    'koi_impact', 'depth_over_duration', 'radius_over_period'
+    'koi_impact'
 ]
 TESS_FEATURES = [
     'period', 'planet_radius', 'planet_temp', 'stellar_radius', 'stellar_temp',
