@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
 import InputField from './InputField';
+import { motion } from 'framer-motion';
+import { baseURL } from "../assets/api";
 import CustomSelect from './CustomSelect';
 import { missionConfigs, missionOptions } from '../assets/missionConfigs';
 
@@ -60,7 +61,7 @@ function ParameterForm({
                     <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
                         <p className="text-red-300">{error}</p>
                         <p className="text-red-300 text-sm mt-1">
-                            Check that the backend server is running on http://127.0.0.1:8000
+                            Check that the backend server is running on {baseURL}
                         </p>
                     </div>
                 )}

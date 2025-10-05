@@ -43,7 +43,7 @@ function ResultDisplay({
                             <p className="text-red-300">{error}</p>
                             <button
                                 onClick={onErrorDismiss}
-                                className="text-sm bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md transition-colors"
+                                className="text-sm text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md transition-colors"
                             >
                                 Try Again
                             </button>
